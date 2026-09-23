@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="AI-Powered Early Sepsis Prediction System - Real-time patient monitoring and risk assessment dashboard for clinical decision support.">
+    <title>SepsisGuard— Early Sepsis Prediction System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" stroke="url(#logoGrad)" stroke-width="2.5" fill="none" />
+                        <path d="M20 8 L20 32 M12 16 L28 16 M14 24 L26 24" stroke="url(#logoGrad)" stroke-width="2"
+                            stroke-linecap="round" />
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d4ff" />
+                                <stop offset="100%" style="stop-color:#7b2ff7" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>SepsisGuard<span></span></h1>
+                    <p>Early Sepsis Prediction System</p>
+                </div>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <button class="nav-btn active" data-section="dashboard" id="nav-dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+                Dashboard
+            </button>
+            <button class="nav-btn" data-section="predict" id="nav-predict">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+                Predict
+            </button>
+            <button class="nav-btn" data-section="alerts" id="nav-alerts">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                Alerts
+                <span class="alert-badge" id="alert-badge">0</span>
+            </button>
+        </nav>
+        <div class="header-right">
+            <div class="live-indicator">
+                <span class="live-dot"></span>
+                LIVE
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Dashboard Section -->
+        <section class="section active" id="section-dashboard">
+            <!-- Stats Cards -->
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card" id="stat-total">
+                    <div class="stat-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-total-value">--</span>
+                        <span class="stat-label">Total Patients</span>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-highrisk">
+                    <div class="stat-icon red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            <line x1="12" y1="9" x2="12" y2="13" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-highrisk-value">--</span>
+                        <span class="stat-label">High Risk</span>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-avgrisk">
+                    <div class="stat-icon orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-avgrisk-value">--</span>
+                        <span class="stat-label">Avg Risk Score</span>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-critical">
+                    <div class="stat-icon purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-critical-value">--</span>
+                        <span class="stat-label">Critical Alerts</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Charts Grid -->
+            <div class="dashboard-charts-grid">
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Risk Distribution Breakdown</h2>
+                            <p class="card-subtitle">Current patient count by sepsis risk category</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="risk-distribution-canvas" width="380" height="210"></canvas>
+                    </div>
+                </div>
+
+                <div class="card chart-card" id="dashboard-quickview-card">
+                    <div class="card-header">
+                        <div>
+                            <h2 id="quickview-title">Patient Risk Breakdown (Pie Chart)</h2>
+                            <p class="card-subtitle" id="quickview-subtitle">Select 'View' on any patient to see parameter breakdown pie chart</p>
+                        </div>
+                        <div class="quickview-controls">
+                            <button type="button" class="btn-view" id="quickview-full-btn" style="display:none;">Full Details &rarr;</button>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="flex-direction:column;">
+                        <canvas id="dashboard-pie-canvas" width="420" height="190"></canvas>
+                        <div class="chart-legend" id="dashboard-pie-legend" style="margin-top:6px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Table -->
+            <div class="card patient-table-card">
+                <div class="card-header">
+                    <h2>Patient Monitoring</h2>
+                    <div class="table-controls">
+                        <div class="search-box">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                            <input type="text" placeholder="Search patients..." id="patient-search">
+                        </div>
+                        <select id="risk-filter" class="filter-select">
+                            <option value="all">All Risk Levels</option>
+                            <option value="Critical">Critical</option>
+                            <option value="High">High</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="patient-table">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Age/Gender</th>
+                                <th>Room</th>
+                                <th>HR</th>
+                                <th>Temp</th>
+                                <th>SpO2</th>
+                                <th>Risk Score</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patient-tbody">
+                            <tr>
+                                <td colspan="9" class="loading-cell">Loading patients...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-pager" id="patient-pager"></div>
+            </div>
+        </section>
+
+        <!-- Prediction Section -->
+        <section class="section" id="section-predict">
+            <div class="predict-layout">
+                <div class="card predict-form-card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Sepsis Risk Assessment</h2>
+                            <p class="card-subtitle">Enter patient data to predict sepsis risk</p>
+                        </div>
+                        <div class="preset-buttons">
+                            <button type="button" class="preset-btn" id="btn-preset-low">⚡ Low Risk Preset</button>
+                            <button type="button" class="preset-btn danger" id="btn-preset-high">⚠ High Risk Preset</button>
+                        </div>
+                    </div>
+                    <form id="predict-form">
+                        <div class="form-section">
+                            <h3 class="form-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg>
+                                Demographics
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="inp-age">Age</label>
+                                    <input type="number" id="inp-age" name="age" value="55" min="18" max="100" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-gender">Gender</label>
+                                    <select id="inp-gender" name="gender">
+                                        <option value="1">Male</option>
+                                        <option value="0">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                </svg>
+                                Vital Signs
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="inp-hr">Heart Rate (bpm)</label>
+                                    <input type="number" id="inp-hr" name="heart_rate" value="88" step="0.1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-rr">Respiratory Rate</label>
+                                    <input type="number" id="inp-rr" name="respiratory_rate" value="18" step="0.1"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-temp">Temperature (°C)</label>
+                                    <input type="number" id="inp-temp" name="temperature" value="37.0" step="0.01"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-sbp">Systolic BP</label>
+                                    <input type="number" id="inp-sbp" name="systolic_bp" value="120" step="0.1"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-dbp">Diastolic BP</label>
+                                    <input type="number" id="inp-dbp" name="diastolic_bp" value="75" step="0.1"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-spo2">SpO2 (%)</label>
+                                    <input type="number" id="inp-spo2" name="spo2" value="97" step="0.1" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                    <path d="M14 2v6h6" />
+                                    <path d="M16 13H8" />
+                                    <path d="M16 17H8" />
+                                    <path d="M10 9H8" />
+                                </svg>
+                                Lab Results
+                            </h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="inp-wbc">WBC (K/μL)</label>
+                                    <input type="number" id="inp-wbc" name="wbc_count" value="9.5" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-lactate">Lactate (mmol/L)</label>
+                                    <input type="number" id="inp-lactate" name="lactate" value="1.5" step="0.01"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-creat">Creatinine (mg/dL)</label>
+                                    <input type="number" id="inp-creat" name="creatinine" value="1.0" step="0.01"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-bili">Bilirubin (mg/dL)</label>
+                                    <input type="number" id="inp-bili" name="bilirubin" value="0.8" step="0.01"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-plt">Platelet Count (K/μL)</label>
+                                    <input type="number" id="inp-plt" name="platelet_count" value="250" step="1"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-glu">Glucose (mg/dL)</label>
+                                    <input type="number" id="inp-glu" name="glucose" value="110" step="0.1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-crp">CRP (mg/L)</label>
+                                    <input type="number" id="inp-crp" name="crp" value="5.0" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inp-pct">Procalcitonin (ng/mL)</label>
+                                    <input type="number" id="inp-pct" name="procalcitonin" value="0.1" step="0.001"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="form-section-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 12h6" />
+                                    <path d="M12 9v6" />
+                                    <circle cx="12" cy="12" r="10" />
+                                </svg>
+                                Medical History
+                            </h3>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label" for="inp-diabetes">
+                                    <input type="checkbox" id="inp-diabetes" name="diabetes">
+                                    <span class="checkmark"></span>
+                                    Diabetes
+                                </label>
+                                <label class="checkbox-label" for="inp-immuno">
+                                    <input type="checkbox" id="inp-immuno" name="immunosuppressed">
+                                    <span class="checkmark"></span>
+                                    Immunosuppressed
+                                </label>
+                                <label class="checkbox-label" for="inp-surgery">
+                                    <input type="checkbox" id="inp-surgery" name="recent_surgery">
+                                    <span class="checkmark"></span>
+                                    Recent Surgery
+                                </label>
+                                <label class="checkbox-label" for="inp-lung">
+                                    <input type="checkbox" id="inp-lung" name="chronic_lung_disease">
+                                    <span class="checkmark"></span>
+                                    Chronic Lung Disease
+                                </label>
+                                <label class="checkbox-label" for="inp-prior">
+                                    <input type="checkbox" id="inp-prior" name="prior_sepsis">
+                                    <span class="checkmark"></span>
+                                    Prior Sepsis
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-predict" id="btn-predict">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
+                            Analyze Sepsis Risk
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="card predict-result-card" id="predict-result-card" style="display:none;">
+                    <div class="card-header">
+                        <h2>Risk Assessment Result</h2>
+                    </div>
+                    <div class="result-content">
+                        <div class="risk-gauge-container">
+                            <canvas id="risk-gauge-canvas" width="280" height="180"></canvas>
+                            <div class="risk-gauge-label" id="risk-gauge-label">--%</div>
+                            <div class="risk-gauge-level" id="risk-gauge-level">--</div>
+                        </div>
+                        <div class="result-details">
+                            <div class="result-section" id="risk-factors-section">
+                                <h3>⚠ Risk Factors Identified</h3>
+                                <ul id="risk-factors-list"></ul>
+                            </div>
+                            <div class="result-section" id="recommendations-section">
+                                <h3>📋 Clinical Recommendations</h3>
+                                <ul id="recommendations-list"></ul>
+                            </div>
+                            <div class="result-meta">
+                                <span id="result-qsofa">qSOFA: --</span>
+                                <span id="result-map">MAP: -- mmHg</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts Section -->
+        <section class="section" id="section-alerts">
+            <div class="card alerts-card">
+                <div class="card-header">
+                    <h2>⚡ Active Alerts</h2>
+                    <p class="card-subtitle">High-risk patients requiring immediate attention</p>
+                </div>
+                <div class="alerts-list" id="alerts-list">
+                    <div class="loading-cell">Loading alerts...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Patient Detail Modal -->
+    <div class="modal-overlay" id="patient-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h2 id="modal-patient-name">Patient Details</h2>
+                    <span class="modal-subtitle" id="modal-patient-meta"></span>
+                </div>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-grid">
+                    <!-- Risk Gauge -->
+                    <div class="modal-risk-section">
+                        <canvas id="modal-risk-gauge" width="220" height="140"></canvas>
+                        <div class="modal-risk-label" id="modal-risk-label">--% Risk</div>
+                        <div class="modal-risk-level" id="modal-risk-level">--</div>
+                    </div>
+                    <!-- Patient Chart Section (Pie Chart & Trend Line) -->
+                    <div class="modal-chart-section">
+                        <div class="chart-header-row">
+                            <h3 id="modal-chart-title">Risk Parameter Breakdown (Pie Chart)</h3>
+                            <div class="view-toggle-btns">
+                                <button type="button" class="toggle-btn active" id="btn-chart-pie">🥧 Pie Chart View</button>
+                                <button type="button" class="toggle-btn" id="btn-chart-trend">📈 24h Vitals Trend</button>
+                            </div>
+                        </div>
+                        <div class="chart-view-box">
+                            <canvas id="modal-pie-chart" width="480" height="190"></canvas>
+                            <canvas id="modal-vitals-chart" width="480" height="190" style="display:none;"></canvas>
+                        </div>
+                        <div class="chart-legend" id="modal-chart-legend"></div>
+                    </div>
+                </div>
+                <!-- Tabs -->
+                <div class="modal-tabs">
+                    <button class="tab-btn active" data-tab="vitals-tab">Current Vitals</button>
+                    <button class="tab-btn" data-tab="labs-tab">Lab Results</button>
+                    <button class="tab-btn" data-tab="history-tab">Medical History</button>
+                </div>
+                <div class="tab-content active" id="vitals-tab">
+                    <div class="vitals-grid" id="modal-vitals-grid"></div>
+                </div>
+                <div class="tab-content" id="labs-tab">
+                    <div class="labs-grid" id="modal-labs-grid"></div>
+                </div>
+                <div class="tab-content" id="history-tab">
+                    <div class="history-grid" id="modal-history-grid"></div>
+                </div>
+
+                <!-- ══════════════════════════════════════════════
+                     🩺 CLINICAL RECOVERY PATHWAY NOTES
+                     ══════════════════════════════════════════════ -->
+                <div class="recovery-notes-section">
+                    <div class="recovery-notes-header">
+                        <span class="recovery-notes-icon">💚</span>
+                        <div>
+                            <h3>How to Lower Sepsis Risk &amp; Path to Recovery</h3>
+                            <p>Evidence-based clinical steps that reduce sepsis risk score and restore patient health</p>
+                        </div>
+                    </div>
+
+                    <div class="recovery-steps-grid">
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(59,130,246,0.15);color:#3b82f6;">💉</div>
+                            <div class="step-content">
+                                <h4>1. Early Targeted Antibiotic Therapy</h4>
+                                <p>Blood cultures are collected before antibiotics are started. Broad-spectrum IV antibiotics are administered within <strong>1 hour</strong> of sepsis suspicion. Once lab sensitivity results are available (24–48 h), therapy is <em>de-escalated</em> to a narrow-spectrum agent, reducing organ stress and lactate levels.</p>
+                                <span class="step-outcome">↓ WBC, ↓ CRP, ↓ Procalcitonin within 48–72 hrs</span>
+                            </div>
+                        </div>
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(0,212,255,0.12);color:#00d4ff;">🩸</div>
+                            <div class="step-content">
+                                <h4>2. Aggressive IV Fluid Resuscitation</h4>
+                                <p>Crystalloid fluids (e.g., Normal Saline or Lactated Ringer's) are given at <strong>30 mL/kg</strong> over 3 hours to restore circulating blood volume, raise MAP above 65 mmHg, and improve organ perfusion. Fluid balance is reassessed every hour.</p>
+                                <span class="step-outcome">↑ MAP, ↓ Lactate, ↑ Urine output → organ recovery</span>
+                            </div>
+                        </div>
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(34,197,94,0.12);color:#22c55e;">🫀</div>
+                            <div class="step-content">
+                                <h4>3. Vasopressor Support (if needed)</h4>
+                                <p>If MAP remains below 65 mmHg after fluids, <strong>Norepinephrine</strong> is started as a first-line vasopressor via a central line. It raises blood pressure to maintain perfusion to vital organs (heart, brain, kidneys) while the infection is being treated.</p>
+                                <span class="step-outcome">↑ Systolic BP, ↓ Shock, Stabilised Heart Rate</span>
+                            </div>
+                        </div>
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(234,179,8,0.12);color:#eab308;">🫁</div>
+                            <div class="step-content">
+                                <h4>4. Oxygen Therapy &amp; Respiratory Support</h4>
+                                <p>Supplemental oxygen is provided to maintain <strong>SpO2 above 94%</strong>. Patients with severe respiratory failure may require high-flow nasal oxygen, NIV, or mechanical ventilation. Respiratory rate normalises as infection resolves and oxygenation improves.</p>
+                                <span class="step-outcome">↑ SpO2, ↓ Respiratory Rate → improved breathing</span>
+                            </div>
+                        </div>
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(168,85,247,0.12);color:#a855f7;">🧪</div>
+                            <div class="step-content">
+                                <h4>5. Source Control &amp; Lab Monitoring</h4>
+                                <p>The infection source (wound, abscess, catheter, IV line) is identified and removed or surgically drained. Serial labs (lactate, WBC, creatinine, bilirubin) are repeated every <strong>6–12 hours</strong> to track organ recovery. Trending improvement confirms treatment is working.</p>
+                                <span class="step-outcome">↓ Lactate, ↓ Creatinine → reduced organ dysfunction</span>
+                            </div>
+                        </div>
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(249,115,22,0.12);color:#f97316;">🌡️</div>
+                            <div class="step-content">
+                                <h4>6. Fever &amp; Glucose Management</h4>
+                                <p>Antipyretics (Paracetamol) are used to bring temperature below <strong>38.3°C</strong>, reducing metabolic demand and heart rate. Blood glucose is maintained between <strong>140–180 mg/dL</strong> using insulin protocols — hyperglycemia worsens outcomes in septic patients.</p>
+                                <span class="step-outcome">↓ Temperature, ↓ HR, Stable Glucose → metabolic recovery</span>
+                            </div>
+                        </div>
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(0,212,255,0.1);color:#00d4ff;">🛏️</div>
+                            <div class="step-content">
+                                <h4>7. ICU Monitoring &amp; Organ Support</h4>
+                                <p>Continuous hemodynamic monitoring (arterial line, central venous pressure) allows real-time tracking. Renal replacement therapy (dialysis) may be initiated if creatinine rises sharply. Platelet transfusions are given if platelet count falls below <strong>50 K/μL</strong>.</p>
+                                <span class="step-outcome">↑ Platelets, ↓ Creatinine, Stable vitals → organ recovery</span>
+                            </div>
+                        </div>
+
+                        <div class="recovery-step">
+                            <div class="step-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;">🌿</div>
+                            <div class="step-content">
+                                <h4>8. Nutrition, Rehabilitation &amp; Recovery</h4>
+                                <p>Early enteral nutrition (within 24–48 h) prevents gut barrier breakdown. Once infection is controlled, antibiotics are stopped (typically after <strong>7–10 days</strong>), vasopressors are weaned, and the patient begins physiotherapy. Immune function improves and risk score drops steadily toward the <strong>Low / Safe</strong> range.</p>
+                                <span class="step-outcome">↓ Overall Risk Score → Patient discharged healthy</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="recovery-notes-footer">
+                        <span class="recovery-footer-icon">ℹ️</span>
+                        <p><strong>Note:</strong> This pathway is based on the <em>Surviving Sepsis Campaign International Guidelines</em>. All clinical decisions must be made by a qualified physician based on individual patient assessment. Early intervention is the single most important factor in reducing sepsis mortality.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js?v=5"></script>
+</body>
+
+</html>
